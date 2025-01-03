@@ -23,7 +23,6 @@ const RegistrationForm: React.FC = () => {
 
   const { addUser } = context;
 
-  // ใช้ Record<string, any> เพื่อให้ RSuite รองรับ
   const [formValue, setFormValue] = useState<{
     firstName: string;
     lastName: string;
@@ -46,13 +45,13 @@ const RegistrationForm: React.FC = () => {
 
   return (
     <Form
-      model={model} // ใช้ Schema สำหรับ Validation
-      formValue={formValue} // ผูกค่า formValue
+      model={model}
+      formValue={formValue}
       onChange={(value: Partial<typeof formValue>) =>
         setFormValue((prev) => ({ ...prev, ...value }))
-      } // อัปเดต formValue เมื่อกรอกข้อมูล
-      onSubmit={handleSubmit} // เรียก handleSubmit เมื่อกด Submit
-      fluid // ให้ฟอร์มขยายเต็มพื้นที่
+      }
+      onSubmit={handleSubmit}
+      fluid
     >
       <Form.Group>
         <Form.ControlLabel className="text-md font-medium">

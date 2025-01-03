@@ -26,21 +26,18 @@ export const RegistrationProvider: React.FC<RegistrationProviderProps> = ({
     { id: "10", firstName: "William", lastName: "Thomas", phone: "0896667777" },
   ];
 
-  // State สำหรับเก็บข้อมูลลงทะเบียน
   const [registrations, setRegistrations] = useState<Registration[]>(() => {
     const storedData = localStorage.getItem("registrations");
-    return storedData ? JSON.parse(storedData) : mockRegistrations; // ใช้ Mock Data ถ้าไม่มีใน LocalStorage
+    return storedData ? JSON.parse(storedData) : mockRegistrations;
   });
 
-  // State สำหรับที่นั่งที่เหลือ
   const [availableSeats, setAvailableSeats] = useState(() => {
     const storedSeats = localStorage.getItem("availableSeats");
     return storedSeats
       ? parseInt(storedSeats, 10)
-      : 50 - mockRegistrations.length; // คำนวณจำนวนที่นั่งเหลือจาก Mock Data
+      : 50 - mockRegistrations.length;
   });
 
-  // ฟังก์ชันสำหรับอัปเดตที่นั่ง
   const updateSeat = (id: string, seat: number) => {
     setRegistrations((prev) =>
       prev.map((registration) =>
@@ -49,21 +46,19 @@ export const RegistrationProvider: React.FC<RegistrationProviderProps> = ({
     );
   };
 
-  // บันทึกข้อมูลลง Local Storage เมื่อ `registrations` หรือ `availableSeats` เปลี่ยนแปลง
   useEffect(() => {
     localStorage.setItem("registrations", JSON.stringify(registrations));
     localStorage.setItem("availableSeats", availableSeats.toString());
   }, [registrations, availableSeats]);
 
-  // ฟังก์ชันสำหรับเพิ่มผู้ใช้ใหม่
   const addUser = (user: Omit<Registration, "id">) => {
     if (availableSeats > 0) {
       const maxId = registrations.length
         ? Math.max(...registrations.map((reg) => parseInt(reg.id, 10)))
-        : 0; // หา id สูงสุดใน registrations
-      const newUser = { ...user, id: (maxId + 1).toString() }; // เพิ่ม id ใหม่
+        : 0;
+      const newUser = { ...user, id: (maxId + 1).toString() };
       setRegistrations([...registrations, newUser]);
-      setAvailableSeats((prev) => prev - 1); // ลดจำนวนที่นั่ง
+      setAvailableSeats((prev) => prev - 1);
     } else {
       alert("No seats available!");
     }
