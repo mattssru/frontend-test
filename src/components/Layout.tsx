@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import {
   Container,
   Header,
@@ -31,11 +31,12 @@ interface NavToggleProps {
   onChange: () => void;
 }
 interface LayoutProps {
-  onLogout: () => void;
   isAdmin: boolean;
+  onLogout: () => void;
 }
 
-const Layout: React.FC<LayoutProps> = ({ onLogout, isAdmin }) => {
+const Layout: React.FC<LayoutProps> = ({ isAdmin, onLogout }) => {
+  const navigate = useNavigate();
   const [expand, setExpand] = useState(true);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1024);
 
@@ -59,9 +60,14 @@ const Layout: React.FC<LayoutProps> = ({ onLogout, isAdmin }) => {
     </HStack>
   );
 
+  const handleLogout = () => {
+    onLogout();
+    navigate("/login");
+  };
+
   const NavToggle: React.FC<NavToggleProps> = ({ expand, onChange }) => (
     <Stack
-      className="nav-toggle"
+      className="nav-toggle mb-3 mr-3"
       justifyContent={expand ? "flex-end" : "center"}
     >
       <IconButton
@@ -150,7 +156,7 @@ const Layout: React.FC<LayoutProps> = ({ onLogout, isAdmin }) => {
                 {isAdmin && (
                   <Nav.Item
                     icon={<Icon as={IoIosLogOut} className="font-semibold" />}
-                    onClick={onLogout}
+                    onClick={handleLogout}
                     className="!font-semibold"
                   >
                     Logout

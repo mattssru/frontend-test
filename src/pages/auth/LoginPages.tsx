@@ -39,7 +39,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
         </Message>,
         { placement: "topCenter" }
       );
-      navigate("/admin");
+      navigate("/admin", { replace: true });
     } else {
       setErrorMessage("Invalid username or password");
     }

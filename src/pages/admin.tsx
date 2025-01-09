@@ -15,9 +15,9 @@ const AdminPage: React.FC = () => {
 
   const { availableSeats, registrations } = context;
   return (
-    <div className="container mx-auto p-4">
+    <div className="mx-auto py-6 px-8">
       <h1 className="text-2xl font-bold mb-4">Admin Panel</h1>
-      <div className="grid grid-cols-2 gap-5 mb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
         <CardResult
           icon={MdEventSeat}
           number={availableSeats}

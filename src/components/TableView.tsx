@@ -31,6 +31,7 @@ const TableView: React.FC<TableViewProps> = ({ isAdmin }) => {
   }
 
   const { registrations, updateSeat } = context;
+  console.log("registrations :>> ", registrations);
 
   const getFilteredData = () => {
     const lowercasedSearch = search.toLowerCase();
@@ -126,34 +127,34 @@ const TableView: React.FC<TableViewProps> = ({ isAdmin }) => {
         cellBordered
         height={500}
       >
-        <Column sortable width={60} align="center">
+        <Column sortable width={60} align="center" fixed="left">
           <HeaderCell>#</HeaderCell>
           <Cell dataKey="id" />
         </Column>
 
-        <Column sortable flexGrow={1}>
+        <Column sortable flexGrow={2} minWidth={170} fullText>
           <HeaderCell>First Name</HeaderCell>
           <Cell dataKey="firstName" />
         </Column>
 
-        <Column sortable flexGrow={1}>
+        <Column sortable flexGrow={2} minWidth={170} fullText>
           <HeaderCell>Last Name</HeaderCell>
           <Cell dataKey="lastName" />
         </Column>
 
-        <Column sortable flexGrow={1}>
+        <Column sortable flexGrow={1} minWidth={120} fullText>
           <HeaderCell>Phone Number</HeaderCell>
           <Cell dataKey="phone" />
         </Column>
         {isAdmin && (
-          <Column sortable align="center" width={150}>
+          <Column sortable align="center" width={100}>
             <HeaderCell>Seat Number</HeaderCell>
             <Cell dataKey="seat" />
           </Column>
         )}
 
         {isAdmin && (
-          <Column width={70} align="center">
+          <Column width={70} align="center" fixed="right">
             <HeaderCell>Action</HeaderCell>
             <Cell>
               {(rowData: { id: string; seat?: number }) => (

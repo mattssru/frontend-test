@@ -34,12 +34,7 @@ const RegistrationForm: React.FC = () => {
   });
 
   const handleSubmit = () => {
-    const newUser = {
-      id: new Date().getTime().toString(),
-      ...formValue,
-    };
-
-    addUser(newUser);
+    addUser(formValue);
     setFormValue({ firstName: "", lastName: "", phone: "" });
   };
 

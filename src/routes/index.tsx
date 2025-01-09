@@ -24,9 +24,18 @@ const AppRoutes: React.FC = () => {
 
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
       <Route
-        element={<Layout onLogout={handleLogout} isAdmin={isAdminLoggedIn} />}
+        path="/login"
+        element={
+          isAdminLoggedIn ? (
+            <Navigate to="/admin" replace />
+          ) : (
+            <LoginPage onLogin={handleLogin} />
+          )
+        }
+      />
+      <Route
+        element={<Layout isAdmin={isAdminLoggedIn} onLogout={handleLogout} />}
       >
         <Route path="/user" element={<UserPage />} />
 

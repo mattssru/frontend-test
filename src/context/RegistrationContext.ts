@@ -10,8 +10,7 @@ export interface Registration {
 
 export interface RegistrationContextType {
   registrations: Registration[];
-  addUser: (user: Registration) => void;
-  // addUser: (user: Omit<Registration, "id">) => void;
+  addUser: (user: Omit<Registration, "id">) => void;
   updateSeat: (id: string, seat: number) => void;
   availableSeats: number;
 }
