@@ -1,44 +1,24 @@
-import React, { useState } from "react";
-import { Routes, Route, Navigate } from "react-router";
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import UserPage from "../pages/user";
 import AdminPage from "../pages/admin";
 import Layout from "../components/Layout";
 import LoginPage from "../pages/auth/LoginPages";
+import { useAuth } from "../context/AuthProvider";
 
 const AppRoutes: React.FC = () => {
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState<boolean>(() => {
-    return localStorage.getItem("isAdminLoggedIn") === "true";
-  });
-
-  const handleLogin = (username: string, password: string) => {
-    if (username === "admin" && password === "1234") {
-      setIsAdminLoggedIn(true);
-      localStorage.setItem("isAdminLoggedIn", "true");
-    }
-  };
-
-  const handleLogout = () => {
-    setIsAdminLoggedIn(false);
-    localStorage.removeItem("isAdminLoggedIn");
-  };
+  const { isAdminLoggedIn } = useAuth();
 
   return (
     <Routes>
       <Route
         path="/login"
         element={
-          isAdminLoggedIn ? (
-            <Navigate to="/admin" replace />
-          ) : (
-            <LoginPage onLogin={handleLogin} />
-          )
+          isAdminLoggedIn ? <Navigate to="/admin" replace /> : <LoginPage />
         }
       />
-      <Route
-        element={<Layout isAdmin={isAdminLoggedIn} onLogout={handleLogout} />}
-      >
+      <Route element={<Layout />}>
         <Route path="/user" element={<UserPage />} />
-
         <Route
           path="/admin"
           element={
@@ -46,7 +26,6 @@ const AppRoutes: React.FC = () => {
           }
         />
       </Route>
-
       <Route path="/" element={<Navigate to="/login" replace />} />
     </Routes>
   );

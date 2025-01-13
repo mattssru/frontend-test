@@ -14,7 +14,7 @@ const UserPage: React.FC = () => {
     throw new Error("RegistrationContext is not available");
   }
 
-  const { availableSeats, registrations } = context;
+  const { availableSeats, registrations, totalSeats } = context;
   return (
     <div className="mx-auto py-6 px-8">
       <h1 className="text-2xl font-bold mb-4">User register</h1>
@@ -34,7 +34,7 @@ const UserPage: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
             <CardResult
               icon={MdEventSeat}
-              number={availableSeats}
+              number={`${availableSeats} / ${totalSeats}`}
               description="จำนวนที่นั่งคงเหลือ"
             />
             <CardResult

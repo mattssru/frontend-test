@@ -3,12 +3,15 @@ import AppRoutes from "./routes";
 import { RegistrationProvider } from "./context/RegistrationProvider";
 // import { CustomProvider } from "rsuite";
 import "./App.css";
+import { AuthProvider } from "./context/AuthProvider";
 
 const App: React.FC = () => {
   return (
-    <RegistrationProvider>
-      <AppRoutes />
-    </RegistrationProvider>
+    <AuthProvider>
+      <RegistrationProvider>
+        <AppRoutes />
+      </RegistrationProvider>
+    </AuthProvider>
   );
 };
 

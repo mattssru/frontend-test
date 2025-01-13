@@ -1,47 +1,39 @@
 import React, { useState } from "react";
 import { Form, Button, Schema, Message, useToaster } from "rsuite";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthProvider";
 
 const model = Schema.Model({
   username: Schema.Types.StringType().isRequired("Please enter your username."),
   password: Schema.Types.StringType().isRequired("Please enter your password."),
 });
 
-interface LoginPageProps {
-  onLogin: (username: string, password: string) => void;
-}
-
-const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
-  const [formValue, setFormValue] = useState<{
-    username: string;
-    password: string;
-  }>({
+const LoginPage: React.FC = () => {
+  const [formValue, setFormValue] = useState({
     username: "admin",
-    password: "1234",
+    password: "Matt1234",
   });
-
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { login } = useAuth();
   const toaster = useToaster();
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    const mockUsername = "admin";
-    const mockPassword = "1234";
-    if (
-      formValue.username === mockUsername &&
-      formValue.password === mockPassword
-    ) {
-      onLogin(formValue.username, formValue.password);
-      setErrorMessage(null);
+    const { username, password } = formValue;
+    if (login(username, password)) {
       toaster.push(
         <Message showIcon type="success" closable>
           Login successful!
         </Message>,
         { placement: "topCenter" }
       );
-      navigate("/admin", { replace: true });
+      navigate("/admin");
     } else {
-      setErrorMessage("Invalid username or password");
+      toaster.push(
+        <Message showIcon type="error" closable>
+          Invalid username or password!
+        </Message>,
+        { placement: "topCenter" }
+      );
     }
   };
 
@@ -101,9 +93,9 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               />
             </Form.Group>
 
-            {errorMessage && (
+            {/* {errorMessage && (
               <p className="text-red-500 text-sm text-center">{errorMessage}</p>
-            )}
+            )} */}
 
             <div className="flex justify-center">
               <Button

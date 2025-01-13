@@ -68,3 +68,6 @@ h1 {
   font-weight: 600;
   padding: 14px 10px !important;
 }
+.rs-sidenav-body .rs-sidenav-nav>.rs-sidenav-item{
+  margin-bottom: 10px !important;
+}

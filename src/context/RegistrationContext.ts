@@ -13,6 +13,7 @@ export interface RegistrationContextType {
   addUser: (user: Omit<Registration, "id">) => void;
   updateSeat: (id: string, seat: number) => void;
   availableSeats: number;
+  totalSeats: number;
 }
 
 export const RegistrationContext = createContext<RegistrationContextType | null>(null);

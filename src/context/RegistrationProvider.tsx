@@ -5,6 +5,8 @@ interface RegistrationProviderProps {
   children: React.ReactNode;
 }
 
+const TOTAL_SEATS = 15;
+
 export const RegistrationProvider: React.FC<RegistrationProviderProps> = ({
   children,
 }) => {
@@ -25,25 +27,35 @@ export const RegistrationProvider: React.FC<RegistrationProviderProps> = ({
     { id: "9", firstName: "Mia", lastName: "Anderson", phone: "0894445555" },
     { id: "10", firstName: "William", lastName: "Thomas", phone: "0896667777" },
   ];
-
   const [registrations, setRegistrations] = useState<Registration[]>(() => {
     const storedData = localStorage.getItem("registrations");
     return storedData ? JSON.parse(storedData) : mockRegistrations;
   });
 
+  const [totalSeats] = useState(TOTAL_SEATS);
   const [availableSeats, setAvailableSeats] = useState(() => {
     const storedSeats = localStorage.getItem("availableSeats");
     return storedSeats
       ? parseInt(storedSeats, 10)
-      : 50 - mockRegistrations.length;
+      : TOTAL_SEATS - mockRegistrations.length;
   });
 
-  const updateSeat = (id: string, seat: number) => {
+  const updateSeat = (id: string, seat: number): string | null => {
+    if (seat < 1 || seat > 50) {
+      return `กรุณากรอกหมายเลขที่นั่งระหว่าง 1 ถึง 50`;
+    }
+    const isSeatTaken = registrations.some(
+      (reg) => reg.seat === seat && reg.id !== id
+    );
+    if (isSeatTaken) {
+      return `ที่นั่งหมายเลข ${seat} ถูกจองไปแล้ว`;
+    }
     setRegistrations((prev) =>
       prev.map((registration) =>
         registration.id === id ? { ...registration, seat } : registration
       )
     );
+    return null;
   };
 
   useEffect(() => {
@@ -70,6 +82,7 @@ export const RegistrationProvider: React.FC<RegistrationProviderProps> = ({
         registrations,
         addUser,
         availableSeats,
+        totalSeats,
         updateSeat,
       }}
     >

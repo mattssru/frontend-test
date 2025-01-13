@@ -85,16 +85,13 @@ const TableView: React.FC<TableViewProps> = ({ isAdmin }) => {
       return;
     }
 
-    const isSeatTaken = registrations.some(
-      (reg) => reg.seat === newSeat && reg.id !== selectedUser.id
-    );
+    const errorMessage = updateSeat(selectedUser.id, newSeat);
 
-    if (isSeatTaken) {
-      alert(`ที่นั่งหมายเลข ${newSeat} ถูกใช้งานแล้ว`);
+    if (errorMessage !== null) {
+      alert(errorMessage);
       return;
     }
 
-    updateSeat(selectedUser.id, newSeat);
     setModalSeats(false);
     alert(`กำหนดที่นั่งหมายเลข ${newSeat} สำเร็จ`);
   };

@@ -21,6 +21,7 @@ import {
 } from "react-icons/md";
 import { Icon } from "@rsuite/icons";
 import { IoMdSettings, IoIosLogOut } from "react-icons/io";
+import { useAuth } from "../context/AuthProvider";
 
 interface BrandProps {
   expand: boolean;
@@ -30,15 +31,12 @@ interface NavToggleProps {
   expand: boolean;
   onChange: () => void;
 }
-interface LayoutProps {
-  isAdmin: boolean;
-  onLogout: () => void;
-}
 
-const Layout: React.FC<LayoutProps> = ({ isAdmin, onLogout }) => {
+const Layout: React.FC = () => {
   const navigate = useNavigate();
   const [expand, setExpand] = useState(true);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1024);
+  const { isAdminLoggedIn, logout } = useAuth();
 
   useEffect(() => {
     const handleResize = () => {
@@ -61,7 +59,7 @@ const Layout: React.FC<LayoutProps> = ({ isAdmin, onLogout }) => {
   );
 
   const handleLogout = () => {
-    onLogout();
+    logout();
     navigate("/login");
   };
 
@@ -95,6 +93,8 @@ const Layout: React.FC<LayoutProps> = ({ isAdmin, onLogout }) => {
         <Sidenav.Header
           className="flex items-center justify-center mb-3"
           style={{ height: 56 }}
+          as={Link}
+          to="/"
         >
           <Brand expand={expand} />
         </Sidenav.Header>
@@ -112,16 +112,17 @@ const Layout: React.FC<LayoutProps> = ({ isAdmin, onLogout }) => {
                 as={Link}
                 to="/user"
                 icon={<Icon as={MdGroup} />}
-                className="text-white !mb-2"
+                className="text-white"
               >
                 User register
               </Nav.Item>
-              {isAdmin && (
+              {isAdminLoggedIn && (
                 <Nav.Item
                   eventKey="2"
                   as={Link}
                   to="/admin"
                   icon={<Icon as={MdAdminPanelSettings} />}
+                  style={{ marginTop: "10px !important" }}
                 >
                   Admin
                 </Nav.Item>
@@ -153,7 +154,7 @@ const Layout: React.FC<LayoutProps> = ({ isAdmin, onLogout }) => {
                 >
                   Langing
                 </Nav.Item>
-                {isAdmin && (
+                {isAdminLoggedIn && (
                   <Nav.Item
                     icon={<Icon as={IoIosLogOut} className="font-semibold" />}
                     onClick={handleLogout}
